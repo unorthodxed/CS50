@@ -10,10 +10,13 @@ function love.load()
     gridXcount = 50
     gridYcount = 35
 
-    foodposition = {
+    function moveFood()
+        foodposition = {
         x = love.math.random(1, gridXcount),
         y = love.math.random(1, gridYcount),
     }
+    end
+    moveFood()
 end
 
 function love.update(dt)
@@ -44,11 +47,17 @@ function love.update(dt)
         end
         table.insert(snakeSegments, 1, {x = nextPositionX,
         y = nextPositionY})
-        table.remove(snakeSegments)
+        if snakeSegments[1].x == foodposition.x and
+        snakeSegments[1].y == foodposition.y then
+            moveFood()
+        else
+            table.remove(snakeSegments)
+        end
 
         if #direction_queue > 1 then
             table.remove(direction_queue, 1)
         end
+
     end
 end
 
