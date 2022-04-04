@@ -11,9 +11,18 @@ function love.update(dt)
     timer = timer + dt
     if timer >= 0.15 then 
         timer = 0
-        local nextPositionX = snakeSegments[1].x + 1
+        local nextPositionX = snakeSegments[1].x
         local nextPositionY = snakeSegments[1].y 
 
+        if direction == 'right' then
+            nextPositionX = nextPositionX + 1
+        elseif direction == 'left' then
+            nextPositionX = nextPositionX - 1
+        elseif direction == 'up' then
+            nextPositionY = nextPositionY - 1
+        elseif direction == 'down' then
+            nextPositionY = nextPositionY + 1
+        end
         table.insert(snakeSegments, 1, {x = nextPositionX,
         y = nextPositionY})
         table.remove(snakeSegments)
@@ -42,5 +51,17 @@ function love.draw()
             cellSize - 1,
             cellSize - 1
         )
+    end
+end
+
+function love.keypressed(key)
+    if key == 'right' then
+        direction = 'right'
+    elseif key == 'left' then
+        direction = 'left'
+    elseif key == 'up' then
+        direction = 'up'
+    elseif key =='down' then
+        direction = 'down'
     end
 end
