@@ -56,24 +56,12 @@ end
 
 function love.keypressed(key)
     if key == 'right' then
-        if direction == 'left' then 
-            direction = 'left'
-        else direction = 'right'
-        end
+        direction = 'right'
     elseif key == 'left' then
-        if direction == 'right' then
-            direction = 'right'
-        else direction = 'left'
-        end
+        direction = 'left'
     elseif key == 'up' then
-        if direction == 'down' then
-            direction = 'down'
-        else direction = 'up'
-        end
+        direction = 'up'
     elseif key =='down' then
-        if direction == 'up' then
-            direction = 'up'
-        else direction = 'down'
-        end
+        direction = 'down'
     end
 end
