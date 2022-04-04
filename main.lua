@@ -5,6 +5,7 @@ function love.load()
         {x = 2, y = 1},
         {x = 1, y = 1}
     }
+    direction_queue = {'right'}
 end
 
 function love.update(dt)
@@ -14,18 +15,22 @@ function love.update(dt)
         local nextPositionX = snakeSegments[1].x
         local nextPositionY = snakeSegments[1].y 
 
-        if direction == 'right' then
+        if direction_queue[1] == 'right' then
             nextPositionX = nextPositionX + 1
-        elseif direction == 'left' then
+        elseif direction_queue[1] == 'left' then
             nextPositionX = nextPositionX - 1
-        elseif direction == 'up' then
+        elseif direction_queue[1] == 'up' then
             nextPositionY = nextPositionY - 1
-        elseif direction == 'down' then
+        elseif direction_queue[1] == 'down' then
             nextPositionY = nextPositionY + 1
         end
         table.insert(snakeSegments, 1, {x = nextPositionX,
         y = nextPositionY})
         table.remove(snakeSegments)
+
+        if #direction_queue > 1 then
+            table.remove(direction_queue, 1)
+        end
     end
 end
 
@@ -55,13 +60,13 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'right' and direction ~= 'left' then
-        direction = 'right'
-    elseif key == 'left' and direction ~= 'right' then
-        direction = 'left'
-    elseif key == 'up' and direction ~= 'down' then
-        direction = 'up'
-    elseif key =='down' and direction ~= 'up' then
-        direction = 'down'
+    if key == 'right' and direction_queue[#direction_queue] ~= 'left' then
+        table.insert(direction_queue, 'right')
+    elseif key == 'left' and direction_queue[#direction_queue] ~= 'right' then
+        table.insert(direction_queue, 'left')
+    elseif key == 'up' and direction_queue[#direction_queue] ~= 'down' then
+        table.insert(direction_queue, 'up')
+    elseif key =='down' and direction_queue[#direction_queue] ~= 'up' then
+        table.insert(direction_queue, 'down')
     end
 end
