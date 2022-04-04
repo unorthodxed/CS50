@@ -55,13 +55,13 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'right' then
+    if key == 'right' and direction ~= 'left' then
         direction = 'right'
-    elseif key == 'left' then
+    elseif key == 'left' and direction ~= 'right' then
         direction = 'left'
-    elseif key == 'up' then
+    elseif key == 'up' and direction ~= 'down' then
         direction = 'up'
-    elseif key =='down' then
+    elseif key =='down' and direction ~= 'up' then
         direction = 'down'
     end
 end
