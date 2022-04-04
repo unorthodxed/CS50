@@ -15,6 +15,16 @@ function love.update(dt)
         local nextPositionX = snakeSegments[1].x
         local nextPositionY = snakeSegments[1].y 
 
+        if nextPositionX > gridXcount then
+            nextPositionX = 1
+        elseif nextPositionX < 1 then
+            nextPositionX = gridXcount
+        elseif nextPositionY > gridYcount then
+            nextPositionY = 1
+        elseif nextPositionY < 1 then
+            nextPositionY = gridYcount
+        end
+
         if direction_queue[1] == 'right' then
             nextPositionX = nextPositionX + 1
         elseif direction_queue[1] == 'left' then
@@ -35,8 +45,8 @@ function love.update(dt)
 end
 
 function love.draw()
-    local gridXcount = 50
-    local gridYcount = 35
+    gridXcount = 50
+    gridYcount = 35
     local cellSize = 15
 
     love.graphics.setColor(.5, .5, .5)
