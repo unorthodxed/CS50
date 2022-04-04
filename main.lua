@@ -11,4 +11,20 @@ function love.draw()
         gridXcount * cellSize,
         gridYcount * cellSize
     )
+
+    local snakeSegments = {
+        {x = 3, y = 1},
+        {x = 2, y = 1},
+        {x = 1, y = 1}
+    }
+    for segmentIndex, segment in ipairs(snakeSegments) do
+        love.graphics.setColor(.6, 1, .32)
+        love.graphics.rectangle(
+            'fill',
+            (segment.x - 1) * cellSize,
+            (segment.y - 1) * cellSize,
+            cellSize - 1,
+            cellSize - 1
+        )
+    end
 end
