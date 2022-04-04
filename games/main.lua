@@ -15,3 +15,7 @@ function love.draw()
     love.graphics.setColor(.87, .84, .27)
     love.graphics.rectangle('fill', 62, birdY, 30, 25)
 end
+
+function love.keypressed(space)
+    birdYspeed = -165
+end
