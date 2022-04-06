@@ -8,13 +8,15 @@ function love.update()
 end
 
 function love.draw()
-    love.graphics.setColor(.3, .3, .3)
-    love.graphics.rectangle('fill',
-    0,
-    0, 
-    playWidth, 
-    playHeight)
-    love.graphics.setColor(.6, .8, .3)
     background = love.graphics.newImage("background.jpg")
+    love.graphics.setColor(.5, .3, .6)
     love.graphics.draw(background, 0, 0, 0, 1.34, 1.7) --load background and scale image to fit window
+    key = love.graphics.newImage("key.png")
+    love.graphics.draw(key, 600, 60, 0, 0.1, 0.1)
+    floor = love.graphics.newImage("floor.png")
+    love.graphics.draw(floor, 150, 330, 0, 3, 0.5)
+    ladder = love.graphics.newImage("ladder.png")
+    love.graphics.draw(ladder, 300, 330, 0, 0.5, 0.8)
+    door = love.graphics.newImage("door.png")
+    love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
 end
