@@ -47,8 +47,10 @@ function love.update(dt)
     elseif playerDirection == 'down' and onLadder == true then
         playerY = playerY + (80 * dt)
     end
-    if playerX < 10 or playerX > playWidth - 50 then  --can be bypassed by key-tapping
-        playerDirection = nil
+    if playerX < 10 then
+        playerX = playerX + 5  
+    elseif playerX > playWidth - 50 then
+        playerX = playerX - 5
     end
 end
 
