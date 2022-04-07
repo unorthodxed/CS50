@@ -9,11 +9,8 @@ function love.load()
     enemyX = enemySpawn
     enemyDirection = love.math.random(1,2)
     defaultPlayer = love.graphics.newImage("player_default.png")
-    ladderBeginX = 250
-    ladderEndX = 280
-    ladderY = 330
-    ladderTop = 265
-    ladderBottom = 375
+    isAttacking = false
+    spawnLadder()
 end
 
 function love.update(dt)
@@ -29,10 +26,15 @@ function love.update(dt)
     elseif enemyX < minEnemyX then
         enemyDirection = 1
     end
-    if playerX > ladderBeginX and playerX < ladderEndX then
+    if playerX >= ladderBeginX and playerX <= ladderEndX and playerY >= ladderTop and playerY <= ladderBottom then
         onLadder = true
     else
         onLadder = false
+        if playerY < ladderTop then
+            playerY = playerY + 1
+        elseif playerY > ladderBottom then
+            playerY = playerY - 1
+        end
     end
     if playerDirection == 'left' then
         playerX = playerX - (120 * dt)
@@ -40,16 +42,16 @@ function love.update(dt)
     elseif playerDirection == 'right' then
         playerX = playerX + (120 * dt)
         defaultPlayer = love.graphics.newImage("player_default.png")
-    elseif playerDirection == 'up' and onLadder == true and playerY > ladderTop then
+    elseif playerDirection == 'up' and onLadder == true then
         playerY = playerY - (80 * dt)
-    elseif playerDirection == 'down' and onLadder == true and playerY < ladderBottom then
+    elseif playerDirection == 'down' and onLadder == true then
         playerY = playerY + (80 * dt)
     end
     if playerX < 10 or playerX > playWidth - 50 then  --can be bypassed by key-tapping
         playerDirection = nil
     end
 end
---or onLadder == false
+
 function love.draw()
     background = love.graphics.newImage("background.jpg")
     love.graphics.setColor(.5, .3, .6)
@@ -59,7 +61,7 @@ function love.draw()
     floor = love.graphics.newImage("floor.png")
     love.graphics.draw(floor, 150, 330, 0, 3, 0.5)
     ladder = love.graphics.newImage("ladder.png")
-    love.graphics.draw(ladder, ladderBeginX, ladderY, 0, 0.5, 0.8)
+    love.graphics.draw(ladder, ladderBeginX, ladderBeginY, 0, 0.5, 0.8)
     door = love.graphics.newImage("door.png")
     love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
@@ -77,17 +79,36 @@ function love.keypressed(key)
         playerDirection = 'up'
     elseif key =='down' then
         playerDirection = 'down'
+    else
+        playerDirection = nil
+    end
+    if key == 'space' then
+        isAttacking = true
+    else
+        isAttacking = false
     end
 end
 
 function love.keyreleased(key)
-    if key == 'left' then
+    if key == 'left' and playerDirection == 'left' then
         playerDirection = nil
-    elseif key == 'right' then
+    elseif key == 'right' and playerDirection == 'right' then
         playerDirection = nil
-    elseif key == 'up' then
+    elseif key == 'up' and playerDirection == 'up' then
         playerDirection = nil
-    elseif key =='down' then
+    elseif key == 'down' and playerDirection == 'down' then
         playerDirection = nil
+    elseif key == 'space' then
+        isAttacking = false
     end
+end
+
+function spawnLadder()
+    ladderMin = 250
+    ladderMax = 600
+    ladderBeginX = love.math.random(ladderMin, ladderMax)
+    ladderEndX = ladderBeginX + 30
+    ladderBeginY = 330
+    ladderTop = 265
+    ladderBottom = 375
 end
