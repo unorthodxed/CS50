@@ -37,11 +37,23 @@ function love.update(dt)
         end
     end
     if playerDirection == 'left' then
-        playerX = playerX - (120 * dt)
-        defaultPlayer = love.graphics.newImage("player_defaultbackwards.png")
+        if playerY >= 374 or playerY <= ladderTop + 1 then
+            playerX = playerX - (120 * dt)
+        end
+        if isAttacking == true and onLadder == false then
+            defaultPlayer = love.graphics.newImage("player_attackbackwards.png")
+        else
+            defaultPlayer = love.graphics.newImage("player_defaultbackwards.png")
+        end
     elseif playerDirection == 'right' then
-        playerX = playerX + (120 * dt)
-        defaultPlayer = love.graphics.newImage("player_default.png")
+        if playerY >= 374 or playerY <= ladderTop + 1 then
+            playerX = playerX + (120 * dt)
+        end
+        if isAttacking == true and onLadder == false then
+            defaultPlayer = love.graphics.newImage("player_attack.png")
+        else
+            defaultPlayer = love.graphics.newImage("player_default.png")
+        end
     elseif playerDirection == 'up' and onLadder == true then
         playerY = playerY - (80 * dt)
     elseif playerDirection == 'down' and onLadder == true then
@@ -73,22 +85,22 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'left' then
-        playerDirection = 'left'
-    elseif key == 'right' then
-        playerDirection = 'right'
-    elseif key == 'up' then
-        playerDirection = 'up'
-    elseif key =='down' then
-        playerDirection = 'down'
-    else
-        playerDirection = nil
-    end
     if key == 'space' then
         isAttacking = true
     else
         isAttacking = false
     end
+        if key == 'left' then
+            playerDirection = 'left'
+        elseif key == 'right' then
+            playerDirection = 'right'
+        elseif key == 'up' then
+            playerDirection = 'up'
+        elseif key =='down' then
+            playerDirection = 'down'
+        elseif key ~= 'space' then
+            playerDirection = nil
+        end
 end
 
 function love.keyreleased(key)
