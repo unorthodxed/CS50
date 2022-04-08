@@ -26,43 +26,49 @@ function love.update(dt)
     elseif enemyX < minEnemyX then
         enemyDirection = 1
     end
-    if playerX >= ladderBeginX and playerX <= ladderEndX and playerY >= ladderTop and playerY <= ladderBottom then
-        onLadder = true
-    else
-        onLadder = false
-        if playerY < ladderTop then
-            playerY = playerY + 1
-        elseif playerY > ladderBottom then
-            playerY = playerY - 1
+    if isDead ~= true then 
+        if playerX >= ladderBeginX and playerX <= ladderEndX and playerY >= ladderTop and playerY <= ladderBottom then
+            onLadder = true
+        else
+            onLadder = false
+            if playerY < ladderTop then
+                playerY = playerY + 1
+            elseif playerY > ladderBottom then
+                playerY = playerY - 1
+            end
+        end
+        if playerDirection == 'left' then
+            if playerY >= 374 or playerY <= ladderTop + 1 then
+                playerX = playerX - (120 * dt)
+            end
+            if isAttacking == true and onLadder == false then
+                defaultPlayer = love.graphics.newImage("player_attackbackwards.png")
+            else
+                defaultPlayer = love.graphics.newImage("player_defaultbackwards.png")
+            end
+        elseif playerDirection == 'right' then
+            if playerY >= 374 or playerY <= ladderTop + 1 then
+                playerX = playerX + (120 * dt)
+            end
+            if isAttacking == true and onLadder == false then
+                defaultPlayer = love.graphics.newImage("player_attack.png")
+            else
+                defaultPlayer = love.graphics.newImage("player_default.png")
+            end
+        elseif playerDirection == 'up' and onLadder == true then
+            playerY = playerY - (80 * dt)
+        elseif playerDirection == 'down' and onLadder == true then
+            playerY = playerY + (80 * dt)
+        end
+        if playerX < 10 then
+            playerX = playerX + 5  
+        elseif playerX > playWidth - 50 then
+            playerX = playerX - 5
         end
     end
-    if playerDirection == 'left' then
-        if playerY >= 374 or playerY <= ladderTop + 1 then
-            playerX = playerX - (120 * dt)
-        end
-        if isAttacking == true and onLadder == false then
-            defaultPlayer = love.graphics.newImage("player_attackbackwards.png")
-        else
-            defaultPlayer = love.graphics.newImage("player_defaultbackwards.png")
-        end
-    elseif playerDirection == 'right' then
-        if playerY >= 374 or playerY <= ladderTop + 1 then
-            playerX = playerX + (120 * dt)
-        end
-        if isAttacking == true and onLadder == false then
-            defaultPlayer = love.graphics.newImage("player_attack.png")
-        else
-            defaultPlayer = love.graphics.newImage("player_default.png")
-        end
-    elseif playerDirection == 'up' and onLadder == true then
-        playerY = playerY - (80 * dt)
-    elseif playerDirection == 'down' and onLadder == true then
-        playerY = playerY + (80 * dt)
-    end
-    if playerX < 10 then
-        playerX = playerX + 5  
-    elseif playerX > playWidth - 50 then
-        playerX = playerX - 5
+    if enemyX + 15 > playerX and enemyX - 15 < playerX and playerY >= ladderTop + 45 then
+        defaultPlayer = love.graphics.newImage("death.png")
+        isDead = true
     end
 end
 
