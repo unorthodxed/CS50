@@ -3,16 +3,13 @@ function love.load()
     playHeight = 600
     playerX = 25
     playerY = 375
-    minEnemyX = 200
-    maxEnemyX = playWidth - 100
-    enemySpawn = love.math.random(minEnemyX, maxEnemyX)
-    enemyX = enemySpawn
-    enemyDirection = love.math.random(1,2)
     defaultPlayer = love.graphics.newImage("assets/player_default.png")
     isAttacking = false
     isDead = false
     enemyDead = false
+    enemyY = 380
     spawnLadder()
+    spawnEnemy(enemyY)
 end
 
 
@@ -64,7 +61,7 @@ function love.draw()
     door = love.graphics.newImage("assets/door.png")
     love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
-    love.graphics.draw(enemy, enemyX, 380, 0, 0.1, 0.1)
+    love.graphics.draw(enemy, enemyX, enemyY, 0, 0.1, 0.1)
     powerup = love.graphics.newImage("assets/powerup.png")
     love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
 end
@@ -166,4 +163,13 @@ function killEnemy(dt)
         enemyDead = true
     end
     return enemyDead
+end
+
+
+function spawnEnemy(enemyY)
+    minEnemyX = 200
+    maxEnemyX = playWidth - 100
+    enemySpawn = love.math.random(minEnemyX, maxEnemyX)
+    enemyX = enemySpawn
+    enemyDirection = love.math.random(1,2)
 end
