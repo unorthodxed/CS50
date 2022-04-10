@@ -15,6 +15,7 @@ function love.load()
     enemyY = 380
     spawnLadder1()
     spawnLadder2()
+    spawnLadder3()
     spawnEnemy(enemyY)
 end
 
@@ -58,6 +59,7 @@ function love.update(dt)
     --maybe add conditional here depending on playerY to determine which ladder to check for
     ladderCheck(ladderBeginX1, ladderEndX1, ladderTop1, ladderBottom1)
     ladderCheck(ladderBeginX2, ladderEndX2, ladderTop2, ladderBottom2)
+    ladderCheck(ladderBeginX3, ladderEndX3, ladderTop3, ladderBottom3)
 end
 
 
@@ -150,11 +152,14 @@ end
 function spawnLadder3()
     ladderMin = 250
     ladderMax = 600
-    ladderBeginX3 = love.math.random(ladderMin, ladderMax)
-    ladderEndX3 = ladderBeginX1 + 30
-    ladderBeginY3 = 330
-    ladderTop3 = 265
-    ladderBottom3 = 375
+    repeat 
+        placeholder = love.math.random(ladderMin, ladderMax)
+    until placeholder < ladderBeginX2 - 40 or placeholder > ladderBeginX2 + 40
+    ladderBeginX3 = placeholder
+    ladderEndX3 = ladderBeginX3 + 30
+    ladderBeginY3 = 100
+    ladderTop3 = 35
+    ladderBottom3 = 150
 end
 
 
@@ -164,7 +169,7 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             playerX = ladderBeginX
             isAttacking = false
         else
-            playerX = playerX - (60 * dt)
+            playerX = playerX - (40 * dt)
         end
         if isAttacking == true then
             defaultPlayer = love.graphics.newImage("assets/player_attackbackwards.png")
@@ -179,7 +184,7 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             playerX = ladderBeginX
             isAttacking = false
         else
-            playerX = playerX + (60 * dt)
+            playerX = playerX + (40 * dt)
         end
         if isAttacking == true then
             defaultPlayer = love.graphics.newImage("assets/player_attack.png")
@@ -196,7 +201,7 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
         end
     elseif playerDirection == 'down' and onLadder == true then
         playerY = playerY + (40 * dt)
-        if (playerY > ladderBottom2 and ladderBottom == ladderBottom2) or (playerY > ladderBottom1 and ladderBottom == ladderBottom1) then
+        if (playerY > ladderBottom2 and ladderBottom == ladderBottom2) or (playerY > ladderBottom1 and ladderBottom == ladderBottom1) or (playerY > ladderBottom3 and ladderBottom == ladderBottom3) then
             playerY = ladderBottom
         end
     end
