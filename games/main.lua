@@ -1,6 +1,11 @@
 function love.load()
     playWidth = 800
     playHeight = 600
+    floorBeginX = 150
+    floorBeginY1 = 330
+    floorBeginY2 = 215
+    floorBeginY3 = 100
+    floorEndX = 650
     playerX = 25
     playerY = 375
     defaultPlayer = love.graphics.newImage("assets/player_default.png")
@@ -63,14 +68,16 @@ function love.draw()
     key = love.graphics.newImage("assets/key.png")
     love.graphics.draw(key, 600, 60, 0, 0.1, 0.1)
     floor = love.graphics.newImage("assets/floor.png")
-    love.graphics.draw(floor, 150, 330, 0, 3, 0.5)
-    love.graphics.draw(floor, 150, 215, 0, 3, 0.5)
+    love.graphics.draw(floor, floorBeginX, floorBeginY1, 0, 3, 0.5)
+    love.graphics.draw(floor, floorBeginX, floorBeginY2, 0, 3, 0.5)
+    love.graphics.draw(floor, floorBeginX, floorBeginY3, 0, 3, 0.5)
     ladder = love.graphics.newImage("assets/ladder.png")
     local function drawLadder(ladderBeginX, ladderBeginY)
         love.graphics.draw(ladder, ladderBeginX, ladderBeginY, 0, 0.5, 0.8)
     end
     drawLadder(ladderBeginX1, ladderBeginY1)
     drawLadder(ladderBeginX2, ladderBeginY2) 
+    drawLadder(ladderBeginX3, ladderBeginY3)
     door = love.graphics.newImage("assets/door.png")
     love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
@@ -140,6 +147,16 @@ function spawnLadder2()
     ladderBottom2 = 265
 end
 
+function spawnLadder3()
+    ladderMin = 250
+    ladderMax = 600
+    ladderBeginX3 = love.math.random(ladderMin, ladderMax)
+    ladderEndX3 = ladderBeginX1 + 30
+    ladderBeginY3 = 330
+    ladderTop3 = 265
+    ladderBottom3 = 375
+end
+
 
 function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
     if playerDirection == 'left' then
@@ -154,6 +171,9 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
         else
             defaultPlayer = love.graphics.newImage("assets/player_defaultbackwards.png")
         end
+        if playerX < floorBeginX - 18 and playerY < ladderBottom1 then
+            playerX = floorBeginX - 18
+        end
     elseif playerDirection == 'right' then
         if playerY < ladderBottom and playerY > ladderTop then
             playerX = ladderBeginX
@@ -165,6 +185,9 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             defaultPlayer = love.graphics.newImage("assets/player_attack.png")
         else
             defaultPlayer = love.graphics.newImage("assets/player_default.png")
+        end
+        if playerX > floorEndX and playerY < ladderBottom1 then
+            playerX = floorEndX
         end
     elseif playerDirection == 'up' and onLadder == true then
         playerY = playerY - (40 * dt)
