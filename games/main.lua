@@ -142,10 +142,11 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
     if playerDirection == 'left' then
         if playerY < ladderBottom and playerY > ladderTop then
             playerX = ladderBeginX
+            isAttacking = false
         else
             playerX = playerX - (60 * dt)
         end
-        if isAttacking == true and onLadder == false then
+        if isAttacking == true then
             defaultPlayer = love.graphics.newImage("assets/player_attackbackwards.png")
         else
             defaultPlayer = love.graphics.newImage("assets/player_defaultbackwards.png")
@@ -153,10 +154,11 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
     elseif playerDirection == 'right' then
         if playerY < ladderBottom and playerY > ladderTop then
             playerX = ladderBeginX
+            isAttacking = false
         else
             playerX = playerX + (60 * dt)
         end
-        if isAttacking == true and onLadder == false then
+        if isAttacking == true then
             defaultPlayer = love.graphics.newImage("assets/player_attack.png")
         else
             defaultPlayer = love.graphics.newImage("assets/player_default.png")
