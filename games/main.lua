@@ -140,8 +140,8 @@ end
 
 function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
     if playerDirection == 'left' then
-        if onLadder == true and playerX < ladderBeginX and playerY < ladderBottom and playerY > ladderTop then
-            playerX = playerX + 60
+        if playerY < ladderBottom and playerY > ladderTop then
+            playerX = ladderBeginX
         else
             playerX = playerX - (60 * dt)
         end
@@ -151,8 +151,8 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             defaultPlayer = love.graphics.newImage("assets/player_defaultbackwards.png")
         end
     elseif playerDirection == 'right' then
-        if onLadder == true and playerX > ladderEndX and playerY < ladderBottom and playerY > ladderTop then
-            playerX = ladderEndX
+        if playerY < ladderBottom and playerY > ladderTop then
+            playerX = ladderBeginX
         else
             playerX = playerX + (60 * dt)
         end
