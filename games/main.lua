@@ -37,15 +37,15 @@ function love.update(dt)
         if isDead ~= true then 
             if playerX >= ladderBeginX - 15 and playerX <= ladderEndX - 15 and playerY >= ladderTop and playerY <= ladderBottom then
                 onLadder = true
-                if playerY < ladderTop - 1 then
-                    playerY = playerY + 1
+                if playerY < ladderTop then
+                    playerY = ladderTop
                 elseif playerY > ladderBottom then
-                    playerY = playerY - 1
+                    playerY = ladderBottom
                 end
-                movePlayer(dt)
+                movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             else
                 onLadder = false
-                movePlayer(dt)
+                movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             end
             boundsCheck(dt)
         end
@@ -78,6 +78,7 @@ function love.draw()
     powerup = love.graphics.newImage("assets/powerup.png")
     love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
     love.graphics.print(playerY, 25, 25)
+    love.graphics.print(playerX, 25, 35)
 end
 
 
@@ -137,9 +138,11 @@ function spawnLadder2()
 end
 
 
-function movePlayer(dt)
+function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
     if playerDirection == 'left' then
-        if playerY >= 374 or (playerY <= ladderTop1 and playerY >= ladderBottom2) then
+        if onLadder == true and playerX < ladderBeginX and playerY < ladderBottom and playerY > ladderTop then
+            playerX = playerX + 60
+        else
             playerX = playerX - (60 * dt)
         end
         if isAttacking == true and onLadder == false then
@@ -148,7 +151,9 @@ function movePlayer(dt)
             defaultPlayer = love.graphics.newImage("assets/player_defaultbackwards.png")
         end
     elseif playerDirection == 'right' then
-        if playerY >= 374 or (playerY <= ladderTop1 and playerY >= ladderBottom2) then
+        if onLadder == true and playerX > ladderEndX and playerY < ladderBottom and playerY > ladderTop then
+            playerX = ladderEndX
+        else
             playerX = playerX + (60 * dt)
         end
         if isAttacking == true and onLadder == false then
@@ -158,14 +163,13 @@ function movePlayer(dt)
         end
     elseif playerDirection == 'up' and onLadder == true then
         playerY = playerY - (40 * dt)
-        if playerY < ladderTop1 then 
-            --might be problematic since we want to climb ladder 2 
-            playerY = ladderTop1
+        if playerY <= ladderTop then 
+            playerY = ladderTop
         end
     elseif playerDirection == 'down' and onLadder == true then
         playerY = playerY + (40 * dt)
-        if playerY > 375 then
-            playerY = 375
+        if (playerY > ladderBottom2 and ladderBottom == ladderBottom2) or (playerY > ladderBottom1 and ladderBottom == ladderBottom1) then
+            playerY = ladderBottom
         end
     end
 end
