@@ -70,7 +70,7 @@ function love.draw()
         love.graphics.draw(ladder, ladderBeginX, ladderBeginY, 0, 0.5, 0.8)
     end
     drawLadder(ladderBeginX1, ladderBeginY1)
-    drawLadder(ladderBeginX2, ladderBeginY2)
+    drawLadder(ladderBeginX2, ladderBeginY2) 
     door = love.graphics.newImage("assets/door.png")
     love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
@@ -130,7 +130,10 @@ end
 function spawnLadder2()
     ladderMin = 250
     ladderMax = 600
-    ladderBeginX2 = love.math.random(ladderMin, ladderMax)
+    repeat 
+        placeholder = love.math.random(ladderMin, ladderMax)
+    until placeholder < ladderBeginX1 - 40 or placeholder > ladderBeginX1 + 40
+    ladderBeginX2 = placeholder
     ladderEndX2 = ladderBeginX2 + 30
     ladderBeginY2 = 215
     ladderTop2 = 150
