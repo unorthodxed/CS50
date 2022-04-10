@@ -21,8 +21,6 @@ end
 
 
 function love.update(dt)
-    killEnemy(dt, ladderTop1)
-    killEnemy(dt, ladderTop2)
     if enemyDead ~= true then
         if enemyDirection == 1 then
             enemyX = enemyX + (150 * dt)
@@ -37,8 +35,16 @@ function love.update(dt)
             enemyDirection = 1
         end
     end
-    isAlive(dt, ladderTop1)
-    isAlive(dt, ladderTop2)
+    if playerY < ladderTop2 then
+        isAlive(dt, ladderTop3)
+        killEnemy(dt, ladderTop3)
+    elseif playerY > ladderTop2 and playerY < ladderTop1 then
+        isAlive(dt, ladderTop2)
+        killEnemy(dt, ladderTop2)
+    else
+        isAlive(dt, ladderTop1)
+        killEnemy(dt, ladderTop1)
+    end
     function ladderCheck(ladderBeginX, ladderEndX, ladderTop, ladderBottom)
         if isDead ~= true then 
             if playerX >= ladderBeginX - 15 and playerX <= ladderEndX - 15 and playerY >= ladderTop and playerY <= ladderBottom then
