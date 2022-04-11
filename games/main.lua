@@ -12,27 +12,41 @@ function love.load()
     isAttacking = false
     isDead = false
     enemyDead = false
-    enemyY = 380
+    enemyY1 = 380
+    enemyY2 = 265
     spawnLadder1()
     spawnLadder2()
     spawnLadder3()
-    spawnEnemy(enemyY)
+    enemy = {
+        {enemyY = 380,
+        enemyX = love.math.random(200, 700),
+        minEnemyX = 200,
+        maxEnemyX = 700,
+        enemyDirection = love.math.random(1,2),
+        image = love.graphics.newImage("assets/enemy.png"),
+        enemyDead = false}, 
+    {love.graphics.newImage("assets/enemy.png")}, 
+    {love.graphics.newImage("assets/enemy.png")}, 
+    {love.graphics.newImage("assets/enemy.png")}
+}
 end
 
 
 function love.update(dt)
-    if enemyDead ~= true then
-        if enemyDirection == 1 then
-            enemyX = enemyX + (150 * dt)
-            enemy = love.graphics.newImage("assets/enemy.png")
-        else
-            enemyX = enemyX - (150 * dt)
-            enemy = love.graphics.newImage("assets/enemybackwards.png")
-        end
-        if enemyX > maxEnemyX then
-            enemyDirection = 2
-        elseif enemyX < minEnemyX then
-            enemyDirection = 1
+    for index, value in ipairs(enemy) do
+        if value.enemyDead ~= true then
+            if value.enemyDirection == 1 then
+                value.enemyX = value.enemyX + (150 * dt)
+                value.image = love.graphics.newImage("assets/enemy.png")
+            else
+                value.enemyX = value.enemyX - (150 * dt)
+                value.image = love.graphics.newImage("assets/enemybackwards.png")
+            end
+            if value.enemyX > value.maxEnemyX then
+                value.enemyDirection = 2
+            elseif value.enemyX < value.minEnemyX then
+                value.enemyDirection = 1
+            end
         end
     end
     if playerY < ladderTop2 then
@@ -42,8 +56,8 @@ function love.update(dt)
         isAlive(dt, ladderTop2)
         killEnemy(dt, ladderTop2)
     else
-        isAlive(dt, ladderTop1)
-        killEnemy(dt, ladderTop1)
+        isAlive(dt, ladderTop1, enemy[1].enemyX)
+        killEnemy(dt, ladderTop1, enemy[1].enemyX)
     end
     function ladderCheck(ladderBeginX, ladderEndX, ladderTop, ladderBottom)
         if isDead ~= true then 
@@ -89,7 +103,10 @@ function love.draw()
     door = love.graphics.newImage("assets/door.png")
     love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
-    love.graphics.draw(enemy, enemyX, enemyY, 0, 0.1, 0.1)
+    local function drawEnemy(image, enemyX, enemyY)
+        love.graphics.draw(image, enemyX, enemyY, 0, 0.1, 0.1)
+    end
+    drawEnemy(enemy[1].image, enemy[1].enemyX, enemy[1].enemyY)
     powerup = love.graphics.newImage("assets/powerup.png")
     love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
     love.graphics.print(playerY, 25, 25)
@@ -214,7 +231,7 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
 end
 
 
-function isAlive(dt, ladderTop)
+function isAlive(dt, ladderTop, enemyX)
     if enemyX + 15 > playerX and enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == false and enemyDead == false then
         defaultPlayer = love.graphics.newImage("assets/death.png")
         isDead = true
@@ -231,19 +248,14 @@ function boundsCheck(dt)
     end
 end
 
-function killEnemy(dt, ladderTop)
+function killEnemy(dt, ladderTop, enemyX)
     if enemyX + 15 > playerX and enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == true then
-        enemy = love.graphics.newImage("assets/poof.png")
-        enemyDead = true
+        enemy[1] = love.graphics.newImage("assets/poof.png")
+        index = 1
+        enemyDead[index] = true
     end
     return enemyDead
 end
 
 
-function spawnEnemy(enemyY)
-    minEnemyX = 200
-    maxEnemyX = playWidth - 100
-    enemySpawn = love.math.random(minEnemyX, maxEnemyX)
-    enemyX = enemySpawn
-    enemyDirection = love.math.random(1,2)
-end
+
