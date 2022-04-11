@@ -43,70 +43,71 @@ end
 
 
 function love.update(dt)
-    for index, value in ipairs(enemy) do
-        if value.enemyDead ~= true then
-            if value.enemyDirection == 1 then
-                value.enemyX = value.enemyX + (150 * dt)
-                value.image = love.graphics.newImage("assets/enemy.png")
-            else
-                value.enemyX = value.enemyX - (150 * dt)
-                value.image = love.graphics.newImage("assets/enemybackwards.png")
-            end
-            if value.enemyX > value.maxEnemyX then
-                value.enemyDirection = 2
-            elseif value.enemyX < value.minEnemyX then
-                value.enemyDirection = 1
-            end
-        end
-    end
-    if playerY <= ladderTop3 then
-        isAlive(dt, ladderTop4, enemy[4])
-        killEnemy(dt, ladderTop4, enemy[4])
-    elseif playerY <= ladderTop2 then
-        isAlive(dt, ladderTop3, enemy[3])
-        killEnemy(dt, ladderTop3, enemy[3])
-    elseif playerY > ladderTop2 and playerY <= ladderTop1 then
-        isAlive(dt, ladderTop2, enemy[2])
-        killEnemy(dt, ladderTop2, enemy[2])
-    else
-        isAlive(dt, ladderTop1, enemy[1])
-        killEnemy(dt, ladderTop1, enemy[1])
-    end
-    function ladderCheck(ladderBeginX, ladderEndX, ladderTop, ladderBottom)
-        if isDead ~= true then 
-            if playerX >= ladderBeginX - 15 and playerX <= ladderEndX - 15 and playerY >= ladderTop and playerY <= ladderBottom then
-                onLadder = true
-                if playerY < ladderTop then
-                    playerY = ladderTop
-                elseif playerY > ladderBottom then
-                    playerY = ladderBottom
+    levelComplete()
+    if complete ~= true then
+        for index, value in ipairs(enemy) do
+            if value.enemyDead ~= true then
+                if value.enemyDirection == 1 then
+                    value.enemyX = value.enemyX + (150 * dt)
+                    value.image = love.graphics.newImage("assets/enemy.png")
+                else
+                    value.enemyX = value.enemyX - (150 * dt)
+                    value.image = love.graphics.newImage("assets/enemybackwards.png")
                 end
-                movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
-            else
-                onLadder = false
-                movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
+                if value.enemyX > value.maxEnemyX then
+                    value.enemyDirection = 2
+                elseif value.enemyX < value.minEnemyX then
+                    value.enemyDirection = 1
+                end
             end
-            boundsCheck(dt)
         end
+        if playerY <= ladderTop3 then
+            isAlive(dt, ladderTop4, enemy[4])
+            killEnemy(dt, ladderTop4, enemy[4])
+        elseif playerY <= ladderTop2 then
+            isAlive(dt, ladderTop3, enemy[3])
+            killEnemy(dt, ladderTop3, enemy[3])
+        elseif playerY > ladderTop2 and playerY <= ladderTop1 then
+            isAlive(dt, ladderTop2, enemy[2])
+            killEnemy(dt, ladderTop2, enemy[2])
+        else
+            isAlive(dt, ladderTop1, enemy[1])
+            killEnemy(dt, ladderTop1, enemy[1])
+        end
+        function ladderCheck(ladderBeginX, ladderEndX, ladderTop, ladderBottom)
+            if isDead ~= true then 
+                if playerX >= ladderBeginX - 15 and playerX <= ladderEndX - 15 and playerY >= ladderTop and playerY <= ladderBottom then
+                    onLadder = true
+                    if playerY < ladderTop then
+                        playerY = ladderTop
+                    elseif playerY > ladderBottom then
+                        playerY = ladderBottom
+                    end
+                    movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
+                else
+                    onLadder = false
+                    movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
+                end
+                boundsCheck(dt)
+            end
+        end
+        --maybe add conditional here depending on playerY to determine which ladder to check for
+        ladderCheck(ladderBeginX1, ladderEndX1, ladderTop1, ladderBottom1)
+        ladderCheck(ladderBeginX2, ladderEndX2, ladderTop2, ladderBottom2)
+        ladderCheck(ladderBeginX3, ladderEndX3, ladderTop3, ladderBottom3)
+        keyCollect(dt)
     end
-    --maybe add conditional here depending on playerY to determine which ladder to check for
-    ladderCheck(ladderBeginX1, ladderEndX1, ladderTop1, ladderBottom1)
-    ladderCheck(ladderBeginX2, ladderEndX2, ladderTop2, ladderBottom2)
-    ladderCheck(ladderBeginX3, ladderEndX3, ladderTop3, ladderBottom3)
 end
 
 
 function love.draw()
     love.graphics.setColor(.5, .3, .6)
     background = love.graphics.newImage("assets/background.jpg")
-    key = love.graphics.newImage("assets/key.png")
     floor = love.graphics.newImage("assets/floor.png")
     ladder = love.graphics.newImage("assets/ladder.png")
-    door = love.graphics.newImage("assets/door.png")
+    key = love.graphics.newImage("assets/key.png")
     powerup = love.graphics.newImage("assets/powerup.png")
     love.graphics.draw(background, 0, 0, 0, 1.34, 1.7)
-    love.graphics.draw(key, 600, 60, 0, 0.1, 0.1)
-    love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
     love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
     local function drawFloor(floorBeginX, floorBeginY)
@@ -118,6 +119,16 @@ function love.draw()
     local function drawEnemy(image, enemyX, enemyY)
         love.graphics.draw(image, enemyX, enemyY, 0, 0.1, 0.1)
     end
+    if hasKey == false then
+        door = love.graphics.newImage("assets/door.png")
+        love.graphics.draw(door, 700, 375, 0, 0.15, 0.15)
+        love.graphics.draw(key, 600, 60, 0, 0.1, 0.1)
+    else
+        door = love.graphics.newImage("assets/doorOpen.png")
+        love.graphics.draw(door, 700, 365, 0, 0.15, 0.15)
+        doorOpen = true
+    end
+    levelComplete(dt)        
     drawFloor(floorBeginX, floorBeginY1)
     drawFloor(floorBeginX, floorBeginY2)
     drawFloor(floorBeginX, floorBeginY3)
@@ -141,6 +152,8 @@ function loadmap()
     floorBeginY2 = 215
     floorBeginY3 = 100
     floorEndX = 650
+    doorOpen = false
+    complete = false
 end
 
 
@@ -150,6 +163,7 @@ function loadplayer()
     defaultPlayer = love.graphics.newImage("assets/player_default.png")
     isAttacking = false
     isDead = false
+    hasKey = false
 end
 
 
@@ -294,5 +308,20 @@ function boundsCheck(dt)
         playerX = playerX + 5  
     elseif playerX > playWidth - 50 then
         playerX = playerX - 5
+    end
+end
+
+
+function keyCollect(dt)
+    if playerX >= 605 and playerX <= 620 and playerY == 35 then
+        hasKey = true
+    end
+end
+
+
+function levelComplete(dt)
+    if playerX >= 696 and playerX <= 712 and doorOpen == true then
+        love.graphics.print("LEVEL COMPLETE!", 150, 250, 0, 5, 5)
+        complete = true
     end
 end
