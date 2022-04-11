@@ -96,6 +96,7 @@ function love.update(dt)
         ladderCheck(ladderBeginX2, ladderEndX2, ladderTop2, ladderBottom2)
         ladderCheck(ladderBeginX3, ladderEndX3, ladderTop3, ladderBottom3)
         keyCollect(dt)
+        getAbility(dt)
     end
 end
 
@@ -106,10 +107,8 @@ function love.draw()
     floor = love.graphics.newImage("assets/floor.png")
     ladder = love.graphics.newImage("assets/ladder.png")
     key = love.graphics.newImage("assets/key.png")
-    powerup = love.graphics.newImage("assets/powerup.png")
     love.graphics.draw(background, 0, 0, 0, 1.34, 1.7)
     love.graphics.draw(defaultPlayer, playerX, playerY, 0, 0.75, 0.75)
-    love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
     local function drawFloor(floorBeginX, floorBeginY)
         love.graphics.draw(floor, floorBeginX, floorBeginY, 0, 3, 0.5)
     end
@@ -128,6 +127,11 @@ function love.draw()
         love.graphics.draw(door, 700, 365, 0, 0.15, 0.15)
         doorOpen = true
     end
+    if hasAbility == false then
+        powerup = love.graphics.newImage("assets/powerup.png")
+        love.graphics.draw(powerup, 450, 65, 0, 0.15, 0.15)
+    end
+    getAbility(dt)
     levelComplete(dt)        
     drawFloor(floorBeginX, floorBeginY1)
     drawFloor(floorBeginX, floorBeginY2)
@@ -164,6 +168,7 @@ function loadplayer()
     isAttacking = false
     isDead = false
     hasKey = false
+    hasAbility = false
 end
 
 
@@ -206,7 +211,7 @@ function spawnLadder3()
 end
 
 function isAlive(dt, ladderTop, enemy)
-    if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == false and enemy.enemyDead == false then
+    if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == false and hasAbility == false and enemy.enemyDead == false then
         defaultPlayer = love.graphics.newImage("assets/death.png")
         isDead = true
     end
@@ -215,7 +220,7 @@ end
 
 
 function killEnemy(dt, ladderTop, enemy)
-    if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == true then
+    if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and (isAttacking == true or hasAbility == true) then
         enemy.image = love.graphics.newImage("assets/poof.png")
         enemy.enemyDead = true
     end
@@ -267,7 +272,13 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             playerX = playerX - (40 * dt)
         end
         if isAttacking == true then
-            defaultPlayer = love.graphics.newImage("assets/player_attackbackwards.png")
+            if hasAbility == true then
+                defaultPlayer = love.graphics.newImage("assets/InvincibleAttackBackwards.png")
+            else
+                defaultPlayer = love.graphics.newImage("assets/player_attackbackwards.png")
+            end
+        elseif hasAbility == true then
+            defaultPlayer = love.graphics.newImage("assets/InvincibleBackwards.png")
         else
             defaultPlayer = love.graphics.newImage("assets/player_defaultbackwards.png")
         end
@@ -282,7 +293,13 @@ function movePlayer(dt, ladderTop, ladderBottom, ladderBeginX, ladderEndX)
             playerX = playerX + (40 * dt)
         end
         if isAttacking == true then
-            defaultPlayer = love.graphics.newImage("assets/player_attack.png")
+            if hasAbility == true then
+                defaultPlayer = love.graphics.newImage("assets/InvincibleAttack.png")
+            else
+                defaultPlayer = love.graphics.newImage("assets/player_attack.png")
+            end
+        elseif hasAbility == true then
+            defaultPlayer = love.graphics.newImage("assets/Invincible.png")
         else
             defaultPlayer = love.graphics.newImage("assets/player_default.png")
         end
@@ -318,6 +335,12 @@ function keyCollect(dt)
     end
 end
 
+
+function getAbility(dt)
+    if playerX >= 450 and playerX <= 475 and playerY == 35 then
+        hasAbility = true
+    end
+end 
 
 function levelComplete(dt)
     if playerX >= 696 and playerX <= 712 and doorOpen == true then
