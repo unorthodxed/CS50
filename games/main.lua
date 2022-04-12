@@ -219,8 +219,10 @@ end
 function isAlive(dt, ladderTop, enemy)
     if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == false and hasAbility == false and enemy.enemyDead == false then
         defaultPlayer = love.graphics.newImage("assets/death.png")
-        isDead = true
-        sounds.death:play()
+        if isDead == false then
+            sounds.death:play()
+            isDead = true
+        end
     end
     return isDead
 end
