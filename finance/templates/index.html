@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<a href="/changepassword">Change Password</a>
+<table>
+    <tr style="border-bottom: 1px solid black">
+        <th>Symbol</th>
+        <th>Name</th>
+        <th>Shares</th>
+        <th>Current Price</th>
+        <th>Total Value</th>
+    </tr>
+    {% for n in range(n) %}
+        <tr style="border-bottom: 1px solid black">
+            <td>{{ current_shares[n]["stock"] }}</td>
+            <td>{{ current_price[n]["name"] }}</td>
+            <td>{{ current_shares[n]["shares"] }}</td>
+            <td>{{ usd(current_price[n]["price"]) }}</td>
+            <td>{{ usd(current_shares[n]["shares"] * current_price[n]["price"]) }}</td>
+        </tr>
+    {% endfor %}
+</table>
+    <h1>Total Balance</h1>
+    <h2>{{ usd(total_cash) }}</h2>
+    <h3>Cash</h1>
+    <h4>{{ usd(balance[0]["cash"]) }}</h4>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<table>
+    <tr>
+    <th>Stock</th>
+    <th>Price</th>
+    <th>Shares</th>
+    <th>Transaction Date</th>
+    <th>Buy/Sell</th>
+    </tr>
+    {% for row in buys %}
+    <tr>
+        <td>{{ row["stock"] }}</td>
+        <td>{{ usd(row["price"]) }}</td>
+        <td>{{ row["shares"] }}</td>
+        <td>{{ row["date_time"] }}</td>
+        <td>Buy</td>
+    </tr>
+    {% endfor %}
+    {% for row in sells %}
+    <tr>
+        <td>{{ row["stock"] }}</td>
+        <td>{{ usd(row["price"]) }}</td>
+        <td>{{ row["shares"] }}</td>
+        <td>{{ row["date_time"] }}</td>
+        <td>Sell</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
