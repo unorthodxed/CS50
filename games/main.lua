@@ -39,6 +39,12 @@ function love.load()
         enemyDead = false
     }
     }
+    sounds = {}
+    sounds.music = love.audio.newSource("assets/music.mp3", "stream")
+    sounds.killEnemySound = love.audio.newSource("assets/killEnemySound.wav", "static")
+    sounds.death = love.audio.newSource("assets/death.mp3", "static")
+    sounds.music:setLooping(true)
+    sounds.music:play()
 end
 
 
@@ -214,6 +220,7 @@ function isAlive(dt, ladderTop, enemy)
     if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and isAttacking == false and hasAbility == false and enemy.enemyDead == false then
         defaultPlayer = love.graphics.newImage("assets/death.png")
         isDead = true
+        sounds.death:play()
     end
     return isDead
 end
@@ -222,7 +229,10 @@ end
 function killEnemy(dt, ladderTop, enemy)
     if enemy.enemyX + 15 > playerX and enemy.enemyX - 15 < playerX and playerY >= ladderTop + 45 and (isAttacking == true or hasAbility == true) then
         enemy.image = love.graphics.newImage("assets/poof.png")
-        enemy.enemyDead = true
+        if enemy.enemyDead == false then
+            sounds.killEnemySound:play()
+            enemy.enemyDead = true
+        end
     end
     return enemyDead
 end
