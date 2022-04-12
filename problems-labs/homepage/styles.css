@@ -1,0 +1,70 @@
+body{
+    background-color: #b15beb;
+}
+
+.arcade{
+    position: relative;
+    top: 25px;
+    left: 250px;
+    width: 200px;
+}
+table, th, td{
+    background-color: white;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    border-radius: 10px;
+}
+.jukebox{
+    position: relative;
+    top: 25px;
+    left: 400px;
+    width: 200px;
+}
+#songtitles{
+    position: relative;
+    top: -50px;
+}
+.kitchen{
+    position: relative;
+    top: 25px;
+    left: 550px;
+    width: 200px;
+}
+.dog{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 100px;
+    width: 300px;
+    height: 225px;
+}
+.emailform{
+    position: relative;
+    top: 150px;
+}
+.catjammer{
+    position: relative;
+    top: 0;
+    left: 85.35%;
+}
+#footer{
+    font-family: sans-serif;
+    position: relative;
+    margin-left: 525px;
+}
+a:link, a:visited{
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover {
+    background-color: #2b262e;
+    color: white;
+  }

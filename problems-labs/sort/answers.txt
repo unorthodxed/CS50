@@ -1,0 +1,14 @@
+sort1 uses: bubble sort
+
+How do you know?: This sort keeps up with sort2 during the best case scenario of a sorted listch,
+but during the worst case it hangs with sort3.
+
+sort2 uses: merge sort
+
+How do you know?: During the worst case scenario of a large array of random numbers,
+this sort wins by a significant margin.
+
+sort3 uses: selection sort
+
+How do you know?: Even during the best case scenario of an already sorted list,
+this sort takes the longest.
