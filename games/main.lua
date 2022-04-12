@@ -1,3 +1,7 @@
+--Christian Tapia
+--Perth Amboy, NJ 
+--Project Title: Soldier vs. Zombies
+
 function love.load()
     loadmap()
     loadplayer()
