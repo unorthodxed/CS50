@@ -1,5 +1,5 @@
 // Simulate genetic inheritance of blood type
-
+//Problem: https://cs50.harvard.edu/x/2022/labs/5/
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
