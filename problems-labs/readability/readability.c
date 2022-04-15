@@ -1,7 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
-
+//Problem: https://cs50.harvard.edu/x/2022/psets/2/readability/
 int count_letters(string text);
 int count_words(string text);
 int count_sentences(string text);
