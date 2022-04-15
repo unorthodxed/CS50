@@ -1,6 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
+//Problem: https://cs50.harvard.edu/x/2022/psets/3/runoff/
 // Max voters and candidates
 #define MAX_VOTERS 100
 #define MAX_CANDIDATES 9
