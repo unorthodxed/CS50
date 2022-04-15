@@ -1,6 +1,6 @@
 #include "helpers.h"
 #include <math.h>
-
+//Problem: https://cs50.harvard.edu/x/2022/psets/4/filter/less/
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
