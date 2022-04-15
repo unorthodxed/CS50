@@ -1,7 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
-
+//Problem: https://cs50.harvard.edu/x/2022/psets/3/plurality/
 // Max number of candidates
 #define MAX 9
 
