@@ -1,5 +1,5 @@
 // Implements a dictionary's functionality
-
+//Problem: https://cs50.harvard.edu/x/2022/psets/5/speller/
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
